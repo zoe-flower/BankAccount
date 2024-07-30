@@ -90,18 +90,24 @@ func TestTransferFunds(t *testing.T) {
 	account2 := openAccount("Zoe Flower", "current")
 	tests := []struct {
 		name                    string
-		account1                BankAccount
-		account2                BankAccount
+		initialBalanceAccount1  int
+		initialBalanceAccount2  int
 		expectedAccount1Balance int
 		expectedAccount2Balance int
 		transferAmount          int
 		expectedError           bool
 	}{
-		{"Valid transfer amount", *account1, *account2, 0, 0, 10, false},
+		{"Valid transfer amount", 50, 20, 40, 30, 10, false},
+		{"Insufficient funds", 5, 20, 5, 20, 10, true},
+		{"Transfer amount is zero", 30, 30, 30, 30, 0, false},
+		{"Negative transfer amount", 30, 30, 30, 30, -10, true},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+
+			account1.balance = tt.initialBalanceAccount1
+			account2.balance = tt.initialBalanceAccount2
 
 			err := transferFunds(*account1, *account2, tt.transferAmount)
 			//function yet to be written, but will reduce balance from acc1 and add to acc2, dummy amounts atm
