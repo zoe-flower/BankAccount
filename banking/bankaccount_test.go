@@ -84,3 +84,39 @@ func TestWithdraw(t *testing.T) {
 		})
 	}
 }
+
+func TestTransferFunds(t *testing.T) {
+	account1 := openAccount("Zoe Flower", "savings")
+	account2 := openAccount("Zoe Flower", "current")
+	tests := []struct {
+		name                    string
+		account1                BankAccount
+		account2                BankAccount
+		expectedAccount1Balance int
+		expectedAccount2Balance int
+		transferAmount          int
+		expectedError           bool
+	}{
+		{"Valid transfer amount", *account1, *account2, 0, 0, 10, false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			err := transferFunds(*account1, *account2, tt.transferAmount)
+			//function yet to be written, but will reduce balance from acc1 and add to acc2, dummy amounts atm
+			// function will set the balance for accounts which I will check
+
+			if (err != nil) != tt.expectedError {
+				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err)
+			}
+
+			if got := account1.checkBalance(); got != tt.expectedAccount1Balance {
+				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedAccount1Balance, got)
+			}
+			if got := account2.checkBalance(); got != tt.expectedAccount2Balance {
+				t.Errorf("Expected balance for account2: %d, got: %d", tt.expectedAccount2Balance, got)
+			}
+		})
+	}
+}
