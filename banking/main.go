@@ -2,9 +2,13 @@ package main
 
 import (
 	"errors"
+	"fmt"
 )
 
 func main() {
+	account1 := openAccount("Zoe Flower", "savings")
+	account2 := openAccount("Zoe Flower", "current")
+	fmt.Println(account1, account2)
 }
 
 type BankAccount struct {
@@ -43,4 +47,9 @@ func (ba *BankAccount) withdraw(withdrawAmount int) error {
 
 func (ba *BankAccount) checkBalance() int {
 	return ba.balance
+}
+
+func (ba *BankAccount) transferFunds(fromAccount, toAccount BankAccount) error {
+
+	return nil
 }
