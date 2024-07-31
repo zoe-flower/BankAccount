@@ -45,7 +45,14 @@ func (ba *BankAccount) checkBalance() int {
 	return ba.balance
 }
 
-func transferFunds(fromAccount, toAccount BankAccount, transferAmount int) error {
-
+func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) error {
+	if transferAmount < 0 {
+		return errors.New("transfer amount must be positive")
+	}
+	if transferAmount > fromAccount.balance {
+		return errors.New("Insufficient funds")
+	}
+	fromAccount.balance -= transferAmount
+	toAccount.balance += transferAmount
 	return nil
 }

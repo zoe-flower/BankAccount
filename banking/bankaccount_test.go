@@ -109,9 +109,7 @@ func TestTransferFunds(t *testing.T) {
 			account1.balance = tt.initialBalanceAccount1
 			account2.balance = tt.initialBalanceAccount2
 
-			err := transferFunds(*account1, *account2, tt.transferAmount)
-			//function yet to be written, but will reduce balance from acc1 and add to acc2, dummy amounts atm
-			// function will set the balance for accounts which I will check
+			err := transferFunds(account1, account2, tt.transferAmount)
 
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err)
