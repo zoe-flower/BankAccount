@@ -56,3 +56,7 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 	toAccount.balance += transferAmount
 	return nil
 }
+
+func viewTransactionHistory(account *BankAccount) *BankAccount {
+	return nil
+}
