@@ -10,7 +10,7 @@ func TestOpenAccount(t *testing.T) {
 		accountType         AccountType
 		expectedBankAccount *BankAccount
 	}{
-		{"Zoe Flower", "savings", &BankAccount{0, 1, "Zoe Flower", "savings"}},
+		{"Zoe Flower", "savings", &BankAccount{0, 1, "Zoe Flower", "savings", []Transactions{}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.accountName, func(t *testing.T) {
@@ -36,18 +36,19 @@ func TestDeposit(t *testing.T) {
 
 	tests := []struct {
 		name            string
+		date            int
 		depositAmount   int
 		expectedError   bool
 		expectedBalance int
 	}{
-		{"Valid deposit", 5, false, 5},
-		{"Invalid deposit (negative amount)", -5, true, 0},
-		{"Valid deposit (zero amount)", 0, false, 0},
+		{"Valid deposit", 0, 5, false, 5},
+		{"Invalid deposit (negative amount)", 1, -5, true, 0},
+		{"Valid deposit (zero amount)", 1, 0, false, 0},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := account.deposit(tt.depositAmount)
+			err := account.deposit(tt.depositAmount, tt.date)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err != nil)
 			}
@@ -63,18 +64,19 @@ func TestWithdraw(t *testing.T) {
 
 	tests := []struct {
 		name            string
+		date            int
 		withdrawAmount  int
 		expectedError   bool
 		expectedBalance int
 	}{
-		{"Valid withdraw amount", -5, false, -5},
-		{"Invalid withdraw amount (positive amount)", 5, true, 0},
-		{"Invalid deposit (zero amount)", 0, true, 0},
+		{"Valid withdraw amount", 1, -5, false, -5},
+		{"Invalid withdraw amount (positive amount)", 1, 5, true, 0},
+		{"Invalid deposit (zero amount)", 2, 0, true, 0},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := account.withdraw(tt.withdrawAmount)
+			err := account.withdraw(tt.withdrawAmount, tt.date)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err != nil)
 			}

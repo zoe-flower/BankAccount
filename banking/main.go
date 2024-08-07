@@ -12,7 +12,7 @@ type BankAccount struct {
 	AccountId    int
 	AccountName  string
 	AccountType  AccountType
-	Transactions Transactions
+	Transactions []Transactions
 }
 
 type AccountType string
@@ -46,19 +46,29 @@ func openAccount(accountName string, accountType AccountType) *BankAccount {
 	}
 }
 
-func (ba *BankAccount) deposit(depositAmount int) error {
+func (ba *BankAccount) deposit(depositAmount int, date int) error {
 	if depositAmount < 0 {
 		return errors.New("deposit amount must be positive")
 	}
 	ba.Balance += depositAmount
+	ba.Transactions = append(ba.Transactions, Transactions{
+		Date:            date,
+		Amount:          depositAmount,
+		TransactionType: Deposit,
+	})
 	return nil
 }
 
-func (ba *BankAccount) withdraw(withdrawAmount int) error {
+func (ba *BankAccount) withdraw(withdrawAmount int, date int) error {
 	if withdrawAmount >= 0 {
 		return errors.New("deposit amount must be negative")
 	}
 	ba.Balance = ba.Balance + withdrawAmount
+	ba.Transactions = append(ba.Transactions, Transactions{
+		Date:            date,
+		Amount:          withdrawAmount,
+		TransactionType: Withdrawal,
+	})
 	return nil
 }
 
