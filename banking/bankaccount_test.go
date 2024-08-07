@@ -127,34 +127,34 @@ func TestTransferFunds(t *testing.T) {
 	}
 }
 
-//create goland project from first principles, add dependency.
-// handle dev-tool go run main.go
-// echo labstack middleware cookbook
-
 func TestViewTransactionHistory(t *testing.T) {
 	account := openAccount("Zoe Flower", "current")
 	// do I then run a few deposit and withdraw functions? Or add the transactions in manually to set up the test?
 	tests := []struct {
-		name          string
-		date          int
-		expectedError bool
+		name                 string
+		date                 int
+		expectedError        bool
+		expectedTransactions Transactions
 	}{
-		{"Valid date with transaction", 2, false},
-		{"Multiple transactions", 1, false},
-		{"Future date", -1, true},
-		{"No transaction on date ", -10, true},
+		{"Valid date with transaction", 2, false, Transactions{}}, // yet to enter actual expected transaction, do I put in manual data or run func as above?
+		{"Multiple transactions", 1, false, Transactions{}},
+		{"Future date", -1, true, Transactions{}},
+		{"No transaction on date ", -10, true, Transactions{}},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+
 			err := account.viewTransactionHistory(tt.withdrawAmount)
+
 			if (err != nil) != tt.expectedError {
-				return
+				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err)
 			}
+
+			if got := account.Transactions; got != tt.expectedTransactions {
+				t.Errorf("Expected transactions: %d, got: %d", tt.expectedTransactions, got)
+			}
+
 		})
 	}
 }
-
-// need to add date to withdraw/deposit etc?
-// how to I attach/save transactions to an account. Have a transactions struct? I append details on each transaction?
-// dummy dates for now

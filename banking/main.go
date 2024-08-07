@@ -39,10 +39,11 @@ const (
 
 func openAccount(accountName string, accountType AccountType) *BankAccount {
 	return &BankAccount{
-		Balance:     0,
-		AccountId:   1,
-		AccountName: accountName,
-		AccountType: accountType,
+		Balance:      0,
+		AccountId:    1,
+		AccountName:  accountName,
+		AccountType:  accountType,
+		Transactions: []Transactions{},
 	}
 }
 
