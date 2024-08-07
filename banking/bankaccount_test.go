@@ -7,7 +7,7 @@ import (
 func TestOpenAccount(t *testing.T) {
 	tests := []struct {
 		accountName         string
-		accountType         accountType
+		accountType         AccountType
 		expectedBankAccount *BankAccount
 	}{
 		{"Zoe Flower", "savings", &BankAccount{0, 1, "Zoe Flower", "savings"}},
@@ -15,17 +15,17 @@ func TestOpenAccount(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.accountName, func(t *testing.T) {
 			actualBankAccount := openAccount(tt.accountName, tt.accountType)
-			if actualBankAccount.accountName != tt.expectedBankAccount.accountName {
-				t.Errorf("expected accountName: %s, got: %s", tt.expectedBankAccount.accountName, actualBankAccount.accountName)
+			if actualBankAccount.AccountName != tt.expectedBankAccount.AccountName {
+				t.Errorf("expected accountName: %s, got: %s", tt.expectedBankAccount.AccountName, actualBankAccount.AccountName)
 			}
-			if actualBankAccount.accountType != tt.expectedBankAccount.accountType {
-				t.Errorf("expected accountType: %s, got: %s", tt.expectedBankAccount.accountType, actualBankAccount.accountType)
+			if actualBankAccount.AccountType != tt.expectedBankAccount.AccountType {
+				t.Errorf("expected accountType: %s, got: %s", tt.expectedBankAccount.AccountType, actualBankAccount.AccountType)
 			}
-			if actualBankAccount.balance != tt.expectedBankAccount.balance {
-				t.Errorf("expected balance: %d, got: %d", tt.expectedBankAccount.balance, actualBankAccount.balance)
+			if actualBankAccount.Balance != tt.expectedBankAccount.Balance {
+				t.Errorf("expected balance: %d, got: %d", tt.expectedBankAccount.Balance, actualBankAccount.Balance)
 			}
-			if actualBankAccount.accountId != tt.expectedBankAccount.accountId {
-				t.Errorf("expected accountId: %d, got: %d", tt.expectedBankAccount.accountId, actualBankAccount.accountId)
+			if actualBankAccount.AccountId != tt.expectedBankAccount.AccountId {
+				t.Errorf("expected accountId: %d, got: %d", tt.expectedBankAccount.AccountId, actualBankAccount.AccountId)
 			}
 		})
 	}
@@ -106,8 +106,8 @@ func TestTransferFunds(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			account1.balance = tt.initialBalanceAccount1
-			account2.balance = tt.initialBalanceAccount2
+			account1.Balance = tt.initialBalanceAccount1
+			account2.Balance = tt.initialBalanceAccount2
 
 			err := transferFunds(account1, account2, tt.transferAmount)
 
