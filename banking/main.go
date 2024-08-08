@@ -8,9 +8,15 @@ import (
 func main() {
 	newAccount := openAccount("Zoe Flower", Current)
 	fmt.Println(newAccount)
-	newAccount.deposit(5, 1)
+	err := newAccount.deposit(200, 1)
+	if err != nil {
+		return
+	}
 	fmt.Println(newAccount.Transactions)
-	newAccount.withdraw(-1, 2)
+	err2 := newAccount.withdraw(-45, 2)
+	if err2 != nil {
+		return
+	}
 	fmt.Println(newAccount.Transactions)
 	fmt.Println(newAccount.Balance)
 
@@ -72,7 +78,7 @@ func (ba *BankAccount) deposit(depositAmount int, date int) error {
 func (ba *BankAccount) withdraw(withdrawAmount int, date int) error {
 	if withdrawAmount >= 0 {
 		return errors.New("deposit amount must be negative")
-	} //not working?
+	}
 	ba.Balance = ba.Balance + withdrawAmount
 	ba.Transactions = append(ba.Transactions, Transactions{
 		Date:            date,
