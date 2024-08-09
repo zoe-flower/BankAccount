@@ -181,3 +181,16 @@ func TestTransferFunds(t *testing.T) {
 // it will add this data along with todays date and add it on to the accounts Transactions
 //so the test will want to check that after the function is run (providing the type and amount),
 // we should be able to check the accounts.Transactions and its should match
+
+func TestAddTransation(t *testing.T) {
+	var tests = []struct {
+		name                string
+	} {
+		{name: "first"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+		}
+	}
+}
