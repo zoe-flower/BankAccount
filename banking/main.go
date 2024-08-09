@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 	fmt.Println(account1.Balance, account2.Balance)
-
+	fmt.Println(account1.Transactions)
 }
 
 type BankAccount struct {
