@@ -211,3 +211,17 @@ func TestAddTransaction(t *testing.T) {
 		})
 	}
 }
+
+//now a test to view transactions
+//the method will work on an account
+//will take no inputs
+//return Transactions.
+
+// So my test will initialise an account
+//to the account I will add transactions
+//I wont do it via deposit/withdraw/transfer OR addTransaction
+//I will apply manually
+//However the above is tedious if I add multiple transactions, is there a better way here?
+//then I will check that the account.Transactions = the return Transactions
+// I can do this at a finer level e.g. check account.transaction[0].transactionType = tt.ExpectedTransaction[0].transactionType, but I cannot see
+//the point if the whole thing is identical?
