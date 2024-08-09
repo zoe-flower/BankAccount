@@ -246,20 +246,20 @@ func TestViewTransactions(t *testing.T) {
 	for _, tt := range tests {
 		account.Transactions = tt.expectedTransactions
 		t.Run(tt.name, func(t *testing.T) {
-			err := account.ViewTransactions()
+			err := account.viewTransactions()
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err)
 			}
-			if got := account.ViewTransactions()[0].TransactionType; got != tt.expectedTransactions[0].TransactionType {
+			if got := account.viewTransactions()[0].TransactionType; got != tt.expectedTransactions[0].TransactionType {
 				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[0].TransactionType, got)
 			}
-			if got := account.ViewTransactions()[1].TransactionType; got != tt.expectedTransactions[1].TransactionType {
+			if got := account.viewTransactions()[1].TransactionType; got != tt.expectedTransactions[1].TransactionType {
 				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[1].TransactionType, got)
 			}
-			if got := account.ViewTransactions()[0].amount; got != tt.expectedTransactions[0].amount {
+			if got := account.viewTransactions()[0].amount; got != tt.expectedTransactions[0].amount {
 				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[0].amount, got)
 			}
-			if got := account.ViewTransactions()[1].amount; got != tt.expectedTransactions[1].amount {
+			if got := account.viewTransactions()[1].amount; got != tt.expectedTransactions[1].amount {
 				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[1].amount, got)
 			}
 		})

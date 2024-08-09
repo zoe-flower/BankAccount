@@ -110,3 +110,7 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 func (ba *BankAccount) addTransaction(transationType TransactionType, amount int) {
 	ba.Transactions = append(ba.Transactions, Transaction{transationType, amount, time.Now()})
 }
+
+func (ba *BankAccount) viewTransactions() []Transaction {
+	return ba.Transactions
+}
