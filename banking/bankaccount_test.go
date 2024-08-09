@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+	"time"
 )
 
 func TestOpenAccount(t *testing.T) {
@@ -220,8 +221,37 @@ func TestAddTransaction(t *testing.T) {
 // So my test will initialise an account
 //to the account I will add transactions
 //I wont do it via deposit/withdraw/transfer OR addTransaction
-//I will apply manually
+//I will apply manually (for reasons as above test? I am not testing other functions, I am testing this one?)
+
+//However I can manually add transactions that cannot exist. Ie. deposit 5, withdraw 600. So I have questions here!
+
 //However the above is tedious if I add multiple transactions, is there a better way here?
 //then I will check that the account.Transactions = the return Transactions
 // I can do this at a finer level e.g. check account.transaction[0].transactionType = tt.ExpectedTransaction[0].transactionType, but I cannot see
 //the point if the whole thing is identical?
+//realise I will need to test individual parts rather than the two because of the timestamp issue again? How is a way to test correct timestamp?
+
+func TestViewTransactions(t *testing.T) {
+	account := openAccount("Zoe Flower", "savings")
+	account.Transactions{{Deposit, 10, time.Now()}, {Withdraw, 15, time.Now()}}
+	var tests = []struct {
+		name          string
+		expectedError bool
+	}{
+		{name: "first", false},
+	}
+	for _, tt := range tests {
+
+		t.Run(tt.name, func(t *testing.T) {
+			err := account.ViewTransactions()
+			if (err != nil) != tt.expectedError {
+				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err)
+			}
+			if got := account.ViewTransactions().TransactionType; got != tt.expectedAccount1Balance {
+				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedAccount1Balance, got)
+			}
+		})
+	}
+}
+
+//I AM AT A POINT WHERE I AM THINKING I NEED TO RUN DEPOSIT/WITHDRAW ETC SO THAT I CAN FORM TEST CASES?
