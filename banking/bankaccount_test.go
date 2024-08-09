@@ -182,7 +182,7 @@ func TestTransferFunds(t *testing.T) {
 //so the test will want to check that after the function is run (providing the type and amount),
 // we should be able to check the accounts.Transactions and its should match
 
-func TestAddTransation(t *testing.T) {
+func TestAddTransaction(t *testing.T) {
 	//account needs to be created.
 	account := openAccount("Zoe Flower", "savings")
 	var tests = []struct {
@@ -190,7 +190,7 @@ func TestAddTransation(t *testing.T) {
 		expectedTransactionType  TransactionType
 		expectedTransactionValue int
 		// I want to provide transactiontype and amount
-	} {
+	}{
 		{name: "Deposit", expectedTransactionType: Deposit, expectedTransactionValue: 50},
 	}
 	for _, tt := range tests {
@@ -198,16 +198,16 @@ func TestAddTransation(t *testing.T) {
 		//I thought I would need to call deposit/withdraw intially, because that is the only real way AddTransaction will be called, but
 		//for testing purposes I believe I can just provide the test data manually?
 		//what type of testing chains methods??
-		account.AddTransaction(tt.expectedTransactionType, tt.expectedTransactionValue)
+		account.addTransaction(tt.expectedTransactionType, tt.expectedTransactionValue)
 		t.Run(tt.name, func(t *testing.T) {
 			//perhaps I dont want to check actual account Transaction with expected. BECAUSE I cannot provide an expected exact time stamp?
 			//So instead I check individual components of the accounts Transaction?
 			if account.Transactions[0].TransactionType != tt.expectedTransactionType {
-				t.Errorf("expected accountType: %s, got: %s", tt.expectedTransactionType, account.Transactions[0].TransactionType)
+				t.Errorf("expected TransactionType: %s, got: %s", tt.expectedTransactionType, account.Transactions[0].TransactionType)
 			}
 			if account.Transactions[0].amount != tt.expectedTransactionValue {
-				t.Errorf("expected accountType: %s, got: %s", tt.expectedTransactionValue, account.Transactions[0].amount)
+				t.Errorf("expected amount: %v, got: %v", tt.expectedTransactionValue, account.Transactions[0].amount)
 			}
-		}
+		})
 	}
 }
