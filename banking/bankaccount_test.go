@@ -11,10 +11,16 @@ func TestOpenAccount(t *testing.T) {
 		accountType         AccountType
 		expectedBankAccount *BankAccount
 	}{
-		{name: "Happy Path",
-			accountName:         "Zoe Flower",
-			accountType:         "savings",
-			expectedBankAccount: &BankAccount{0, "1", "Zoe Flower", "savings"}},
+		{
+			name:        "Happy Path",
+			accountName: "Zoe Flower",
+			accountType: "savings",
+			expectedBankAccount: &BankAccount{
+				Balance:     0,
+				AccountName: "Zoe Flower",
+				AccountType: "savings",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.accountName, func(t *testing.T) {
@@ -170,18 +176,24 @@ func TestTransferFunds(t *testing.T) {
 }
 
 func TestAddTransaction(t *testing.T) {
+	account := openAccount("Zoe Flower", "current")
 	var tests = []struct {
-		name                string
-		expectedTransaction Transaction
-		expectedError       bool
+		name                    string
+		expectedTransactionType TransactionType
+		expectedAmount          int
+		expectedTransaction     Transaction
+		expectedError           bool
 	}{
-		{name: "Deposit", expectedTransaction: []Transaction{transactionType: deposit, amount: 10, date, 1}},
+		{name: "Deposit", expectedTransactionType: Deposit, expectedAmount: 10, expectedError: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			transaction := addTransaction(transactionType, amount, date)
-			if got := transaction; got != tt.expectedTransaction {
-				t.Errorf("Expected transaction record: %d, got: %d", tt.expectedTransaction, got)
+			err := account.deposit(tt.expectedAmount)
+			if err != nil {
+				return
+			}
+			if got := account.Transactions[0]; got != tt.expectedTransaction {
+				t.Errorf("Expected transaction for account1: %d, got: %d", tt.expectedTransaction, got)
 			}
 		})
 	}
