@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
+	"time"
 )
 
 func main() {
@@ -12,10 +13,11 @@ func main() {
 }
 
 type BankAccount struct {
-	Balance     int
-	AccountId   string
-	AccountName string
-	AccountType AccountType
+	Balance      int
+	AccountId    string
+	AccountName  string
+	AccountType  AccountType
+	Transactions []Transaction
 }
 
 type AccountType string
@@ -24,6 +26,20 @@ const (
 	Savings AccountType = "Savings"
 	Current AccountType = "Current"
 	Credit  AccountType = "Credit"
+)
+
+type Transaction struct {
+	TransactionType TransactionType
+	amount          int
+	date            time.Time
+}
+
+type TransactionType string
+
+const (
+	Deposit  TransactionType = "Deposit"
+	Withdraw TransactionType = "Withdraw"
+	Transfer TransactionType = "Transfer"
 )
 
 func GenerateUUID() string {
@@ -72,6 +88,8 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 	return nil
 }
 
-//setTransaction
+func (ba *BankAccount) addTransaction(transationType TransactionType, amount int) {
+	ba.Transactions = append(ba.Transactions, Transaction{transationType, amount, time.Now()})
+}
 
 //viewTransaction
