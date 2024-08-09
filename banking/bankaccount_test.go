@@ -174,3 +174,10 @@ func TestTransferFunds(t *testing.T) {
 		})
 	}
 }
+
+// addTransaction
+
+//I want this function to take an account, transactiontype and amount.
+// it will add this data along with todays date and add it on to the accounts Transactions
+//so the test will want to check that after the function is run (providing the type and amount),
+// we should be able to check the accounts.Transactions and its should match
