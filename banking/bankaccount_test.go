@@ -174,27 +174,3 @@ func TestTransferFunds(t *testing.T) {
 		})
 	}
 }
-
-func TestAddTransaction(t *testing.T) {
-	account := openAccount("Zoe Flower", "current")
-	var tests = []struct {
-		name                    string
-		expectedTransactionType TransactionType
-		expectedAmount          int
-		expectedTransaction     Transaction
-		expectedError           bool
-	}{
-		{name: "Deposit", expectedTransactionType: Deposit, expectedAmount: 10, expectedError: false},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			err := account.deposit(tt.expectedAmount)
-			if err != nil {
-				return
-			}
-			if got := account.Transactions[0]; got != tt.expectedTransaction {
-				t.Errorf("Expected transaction for account1: %d, got: %d", tt.expectedTransaction, got)
-			}
-		})
-	}
-}

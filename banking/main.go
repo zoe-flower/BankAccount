@@ -61,6 +61,7 @@ func (ba *BankAccount) deposit(depositAmount int) error {
 		return errors.New("deposit amount must be positive")
 	}
 	ba.Balance += depositAmount
+	ba.addTransaction(Deposit, depositAmount)
 	return nil
 }
 
@@ -89,7 +90,4 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 }
 
 func (ba *BankAccount) addTransaction(transationType TransactionType, amount int) {
-	ba.Transactions = append(ba.Transactions, Transaction{transationType, amount, time.Now()})
 }
-
-//viewTransaction
