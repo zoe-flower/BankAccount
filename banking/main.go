@@ -8,8 +8,23 @@ import (
 )
 
 func main() {
-	newAccount := openAccount("Zoe Flower", Current)
-	fmt.Println(newAccount)
+	account1 := openAccount("Zoe Flower", Current)
+	account2 := openAccount("Zoe Flower", Savings)
+	fmt.Println(account1, account2)
+	account1.deposit(1656)
+	account2.deposit(4631)
+	fmt.Println(account1.Balance, account2.Balance)
+	err := transferFunds(account1, account2, 345)
+	if err != nil {
+		return
+	}
+	fmt.Println(account1.Balance, account2.Balance)
+	err2 := transferFunds(account2, account1, 234)
+	if err2 != nil {
+		return
+	}
+	fmt.Println(account1.Balance, account2.Balance)
+
 }
 
 type BankAccount struct {
@@ -70,6 +85,7 @@ func (ba *BankAccount) withdraw(withdrawAmount int) error {
 		return errors.New("deposit amount must be negative")
 	}
 	ba.Balance = ba.Balance + withdrawAmount
+	ba.addTransaction(Withdraw, withdrawAmount)
 	return nil
 }
 
@@ -86,6 +102,8 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 	}
 	fromAccount.Balance -= transferAmount
 	toAccount.Balance += transferAmount
+	fromAccount.addTransaction(Transfer, -1*transferAmount)
+	toAccount.addTransaction(Transfer, transferAmount)
 	return nil
 }
 
