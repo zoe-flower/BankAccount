@@ -168,3 +168,21 @@ func TestTransferFunds(t *testing.T) {
 		})
 	}
 }
+
+func TestAddTransaction(t *testing.T) {
+	var tests = []struct {
+		name                string
+		expectedTransaction Transaction
+		expectedError       bool
+	}{
+		{name: "Deposit", expectedTransaction: []Transaction{transactionType: deposit, amount: 10, date, 1}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			transaction := addTransaction(transactionType, amount, date)
+			if got := transaction; got != tt.expectedTransaction {
+				t.Errorf("Expected transaction record: %d, got: %d", tt.expectedTransaction, got)
+			}
+		})
+	}
+}
