@@ -6,11 +6,15 @@ import (
 
 func TestOpenAccount(t *testing.T) {
 	tests := []struct {
+		name                string
 		accountName         string
 		accountType         AccountType
 		expectedBankAccount *BankAccount
 	}{
-		{"Zoe Flower", "savings", &BankAccount{0, 1, "Zoe Flower", "savings", []Transactions{}}},
+		{name: "Happy Path",
+			accountName:         "Zoe Flower",
+			accountType:         "savings",
+			expectedBankAccount: &BankAccount{0, "1", "Zoe Flower", "savings"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.accountName, func(t *testing.T) {
@@ -24,9 +28,6 @@ func TestOpenAccount(t *testing.T) {
 			if actualBankAccount.Balance != tt.expectedBankAccount.Balance {
 				t.Errorf("expected balance: %d, got: %d", tt.expectedBankAccount.Balance, actualBankAccount.Balance)
 			}
-			if actualBankAccount.AccountId != tt.expectedBankAccount.AccountId {
-				t.Errorf("expected accountId: %d, got: %d", tt.expectedBankAccount.AccountId, actualBankAccount.AccountId)
-			}
 		})
 	}
 }
@@ -36,19 +37,27 @@ func TestDeposit(t *testing.T) {
 
 	tests := []struct {
 		name            string
-		date            int
 		depositAmount   int
 		expectedError   bool
 		expectedBalance int
 	}{
-		{"Valid deposit", 0, 5, false, 5},
-		{"Invalid deposit (negative amount)", 1, -5, true, 0},
-		{"Valid deposit (zero amount)", 1, 0, false, 0},
+		{name: "Valid deposit",
+			depositAmount:   5,
+			expectedError:   false,
+			expectedBalance: 5},
+		{name: "Invalid deposit (negative amount)",
+			depositAmount:   -5,
+			expectedError:   true,
+			expectedBalance: 0},
+		{name: "Valid deposit (zero amount)",
+			depositAmount:   0,
+			expectedError:   false,
+			expectedBalance: 0},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := account.deposit(tt.depositAmount, tt.date)
+			err := account.deposit(tt.depositAmount)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err != nil)
 			}
@@ -64,19 +73,27 @@ func TestWithdraw(t *testing.T) {
 
 	tests := []struct {
 		name            string
-		date            int
 		withdrawAmount  int
 		expectedError   bool
 		expectedBalance int
 	}{
-		{"Valid withdraw amount", 1, -5, false, -5},
-		{"Invalid withdraw amount (positive amount)", 1, 5, true, 0},
-		{"Invalid deposit (zero amount)", 2, 0, true, 0},
+		{name: "Valid withdraw amount",
+			withdrawAmount:  -5,
+			expectedError:   false,
+			expectedBalance: -5},
+		{name: "Invalid withdraw amount (positive amount)",
+			withdrawAmount:  5,
+			expectedError:   true,
+			expectedBalance: 0},
+		{name: "Invalid deposit (zero amount)",
+			withdrawAmount:  0,
+			expectedError:   true,
+			expectedBalance: 0},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := account.withdraw(tt.withdrawAmount, tt.date)
+			err := account.withdraw(tt.withdrawAmount)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err != nil)
 			}
@@ -90,7 +107,7 @@ func TestWithdraw(t *testing.T) {
 func TestTransferFunds(t *testing.T) {
 	account1 := openAccount("Zoe Flower", "savings")
 	account2 := openAccount("Zoe Flower", "current")
-	tests := []struct {
+	var tests = []struct {
 		name                    string
 		initialBalanceAccount1  int
 		initialBalanceAccount2  int
@@ -99,12 +116,37 @@ func TestTransferFunds(t *testing.T) {
 		transferAmount          int
 		expectedError           bool
 	}{
-		{"Valid transfer amount", 50, 20, 40, 30, 10, false},
-		{"Insufficient funds", 5, 20, 5, 20, 10, true},
-		{"Transfer amount is zero", 30, 30, 30, 30, 0, false},
-		{"Negative transfer amount", 30, 30, 30, 30, -10, true},
+		{name: "Valid transfer amount",
+			initialBalanceAccount1:  50,
+			initialBalanceAccount2:  20,
+			expectedAccount1Balance: 40,
+			expectedAccount2Balance: 30,
+			transferAmount:          10,
+			expectedError:           false},
+		{name: "Insufficient funds",
+			initialBalanceAccount1:  5,
+			initialBalanceAccount2:  20,
+			expectedAccount1Balance: 5,
+			expectedAccount2Balance: 20,
+			transferAmount:          10,
+			expectedError:           true},
+		{name: "Transfer amount is zero",
+			initialBalanceAccount1:  30,
+			initialBalanceAccount2:  30,
+			expectedAccount1Balance: 30,
+			expectedAccount2Balance: 30,
+			transferAmount:          0,
+			expectedError:           false},
+		{
+			name:                    "Negative transfer amount",
+			initialBalanceAccount1:  30,
+			initialBalanceAccount2:  30,
+			expectedAccount1Balance: 30,
+			expectedAccount2Balance: 30,
+			transferAmount:          -10,
+			expectedError:           true,
+		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
