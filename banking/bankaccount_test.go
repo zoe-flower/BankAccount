@@ -233,25 +233,35 @@ func TestAddTransaction(t *testing.T) {
 
 func TestViewTransactions(t *testing.T) {
 	account := openAccount("Zoe Flower", "savings")
-	account.Transactions{{Deposit, 10, time.Now()}, {Withdraw, 15, time.Now()}}
 	var tests = []struct {
-		name          string
-		expectedError bool
+		name                 string
+		expectedTransactions []Transaction
+		expectedError        bool
 	}{
-		{name: "first", false},
+		{name: "first",
+			expectedTransactions: []Transaction{{Deposit, 10, time.Now()}, {Withdraw, 15, time.Now()}},
+			expectedError:        false},
 	}
+	//account.Transactions{{Deposit, 10, time.Now()}, {Withdraw, 15, time.Now()}}
 	for _, tt := range tests {
-
+		account.Transactions = tt.expectedTransactions
 		t.Run(tt.name, func(t *testing.T) {
 			err := account.ViewTransactions()
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err)
 			}
-			if got := account.ViewTransactions().TransactionType; got != tt.expectedAccount1Balance {
-				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedAccount1Balance, got)
+			if got := account.ViewTransactions()[0].TransactionType; got != tt.expectedTransactions[0].TransactionType {
+				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[0].TransactionType, got)
+			}
+			if got := account.ViewTransactions()[1].TransactionType; got != tt.expectedTransactions[1].TransactionType {
+				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[1].TransactionType, got)
+			}
+			if got := account.ViewTransactions()[0].amount; got != tt.expectedTransactions[0].amount {
+				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[0].amount, got)
+			}
+			if got := account.ViewTransactions()[1].amount; got != tt.expectedTransactions[1].amount {
+				t.Errorf("Expected balance for account1: %d, got: %d", tt.expectedTransactions[1].amount, got)
 			}
 		})
 	}
 }
-
-//I AM AT A POINT WHERE I AM THINKING I NEED TO RUN DEPOSIT/WITHDRAW ETC SO THAT I CAN FORM TEST CASES?
