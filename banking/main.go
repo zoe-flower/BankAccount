@@ -13,6 +13,7 @@ func main() {
 	fmt.Println(account1, account2)
 	account1.deposit(1656)
 	account2.deposit(4631)
+	account2.withdraw(-123)
 	fmt.Println(account1.Balance, account2.Balance)
 	err := transferFunds(account1, account2, 345)
 	if err != nil {
@@ -25,6 +26,7 @@ func main() {
 	}
 	fmt.Println(account1.Balance, account2.Balance)
 	fmt.Println(account1.Transactions)
+	fmt.Println(account2.Transactions)
 }
 
 type BankAccount struct {
