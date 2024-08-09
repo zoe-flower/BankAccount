@@ -126,35 +126,3 @@ func TestTransferFunds(t *testing.T) {
 		})
 	}
 }
-
-// func TestViewTransactionHistory(t *testing.T) {
-// 	account := openAccount("Zoe Flower", "current")
-// 	// do I then run a few deposit and withdraw functions? Or add the transactions in manually to set up the test?
-// 	tests := []struct {
-// 		name                 string
-// 		date                 int
-// 		expectedError        bool
-// 		expectedTransactions Transactions
-// 	}{
-// 		{"Valid date with transaction", 2, false, Transactions{}}, // yet to enter actual expected transaction, do I put in manual data or run func as above?
-// 		{"Multiple transactions", 1, false, Transactions{}},
-// 		{"Future date", -1, true, Transactions{}},
-// 		{"No transaction on date ", -10, true, Transactions{}},
-// 	}
-
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-
-// 			err := account.viewTransactionHistory(tt.withdrawAmount)
-
-// 			if (err != nil) != tt.expectedError {
-// 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err)
-// 			}
-
-// 			if got := account.Transactions; got != tt.expectedTransactions {
-// 				t.Errorf("Expected transactions: %d, got: %d", tt.expectedTransactions, got)
-// 			}
-
-// 		})
-// 	}
-// }
