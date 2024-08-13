@@ -35,6 +35,8 @@ type BankAccount struct {
 	AccountName  string
 	AccountType  AccountType
 	Transactions []Transaction
+
+	//timeProviderThingy
 }
 
 type AccountType string
@@ -73,6 +75,7 @@ func openAccount(accountName string, accountType AccountType) *BankAccount {
 	}
 }
 
+// TODO: make this public
 func (ba *BankAccount) deposit(depositAmount int) error {
 	if depositAmount < 0 {
 		return errors.New("deposit amount must be positive")
@@ -82,6 +85,7 @@ func (ba *BankAccount) deposit(depositAmount int) error {
 	return nil
 }
 
+// TODO: make this public
 func (ba *BankAccount) withdraw(withdrawAmount int) error {
 	if withdrawAmount >= 0 {
 		return errors.New("deposit amount must be negative")
@@ -109,7 +113,9 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 	return nil
 }
 
+// TODO: should return an error
 func (ba *BankAccount) addTransaction(transactionType TransactionType, amount int) {
+	// now:= ba.timeProviderThingy.Now()
 	ba.Transactions = append(ba.Transactions, Transaction{transactionType, amount, time.Now().Local()})
 }
 

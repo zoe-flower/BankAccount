@@ -184,31 +184,33 @@ func TestTransferFunds(t *testing.T) {
 // we should be able to check the accounts.Transactions and its should match
 
 func TestAddTransaction(t *testing.T) {
-	//account needs to be created.
-	account := openAccount("Zoe Flower", "savings")
+
 	var tests = []struct {
 		name                     string
+		account                  BankAccount
 		expectedTransactionType  TransactionType
 		expectedTransactionValue int
-		// I want to provide transactiontype and amount
 	}{
-		{name: "Deposit", expectedTransactionType: Deposit, expectedTransactionValue: 50},
+		{
+			name:                     "Deposit",
+			expectedTransactionType:  Deposit,
+			expectedTransactionValue: 50,
+			account:                  BankAccount{AccountName: "zoe", AccountType: "saving"},
+			// timeProviderThingy: fakeTimeProvider},
+		},
 	}
 	for _, tt := range tests {
-		//can call the AddTransaction method here.
-		//I thought I would need to call deposit/withdraw intially, because that is the only real way AddTransaction will be called, but
-		//for testing purposes I believe I can just provide the test data manually?
-		//what type of testing chains methods??
-		account.addTransaction(tt.expectedTransactionType, tt.expectedTransactionValue)
+
 		t.Run(tt.name, func(t *testing.T) {
-			//perhaps I dont want to check actual account Transaction with expected. BECAUSE I cannot provide an expected exact time stamp?
-			//So instead I check individual components of the accounts Transaction?
-			if account.Transactions[0].TransactionType != tt.expectedTransactionType {
-				t.Errorf("expected TransactionType: %s, got: %s", tt.expectedTransactionType, account.Transactions[0].TransactionType)
+			tt.account.addTransaction(tt.expectedTransactionType, tt.expectedTransactionValue)
+
+			if tt.account.Transactions[0].TransactionType != tt.expectedTransactionType {
+				t.Errorf("expected TransactionType: %s, got: %s", tt.expectedTransactionType, tt.account.Transactions[0].TransactionType)
 			}
-			if account.Transactions[0].amount != tt.expectedTransactionValue {
-				t.Errorf("expected amount: %v, got: %v", tt.expectedTransactionValue, account.Transactions[0].amount)
+			if tt.account.Transactions[0].amount != tt.expectedTransactionValue {
+				t.Errorf("expected amount: %v, got: %v", tt.expectedTransactionValue, tt.account.Transactions[0].amount)
 			}
+			// assertEqual(t, 1, expect..., FieldsToIgnore(trans.time
 		})
 	}
 }
