@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
-	account1 := openAccount("Zoe Flower", Current)
-	account2 := openAccount("Zoe Flower", Savings)
+	realTimeProvider := &RealTimeProvider{}
+	account1 := openAccount("Zoe Flower", Current, realTimeProvider)
+	account2 := openAccount("Zoe Flower", Savings, realTimeProvider)
 	fmt.Println(account1, account2)
 	err4 := account1.Deposit(1656)
 	if err4 != nil {
@@ -43,12 +44,18 @@ func main() {
 	fmt.Println(account2.Transactions)
 }
 
+func GenerateUUID() string {
+	id := uuid.New()
+	return id.String()
+}
+
 type BankAccount struct {
 	Balance      int
 	AccountId    string
 	AccountName  string
 	AccountType  AccountType
 	Transactions []Transaction
+	TimeProvider TimeProvider
 
 	//timeProviderThingy
 }
@@ -75,17 +82,13 @@ const (
 	Transfer TransactionType = "Transfer"
 )
 
-func GenerateUUID() string {
-	id := uuid.New()
-	return id.String()
-}
-
-func openAccount(accountName string, accountType AccountType) *BankAccount {
+func openAccount(accountName string, accountType AccountType, tp TimeProvider) *BankAccount {
 	return &BankAccount{
-		Balance:     0,
-		AccountId:   GenerateUUID(),
-		AccountName: accountName,
-		AccountType: accountType,
+		Balance:      0,
+		AccountId:    GenerateUUID(),
+		AccountName:  accountName,
+		AccountType:  accountType,
+		TimeProvider: tp,
 	}
 }
 
@@ -142,14 +145,14 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 }
 
 func (ba *BankAccount) addTransaction(transactionType TransactionType, amount int) error {
-	// now:= ba.timeProviderThingy.Now()
+	now := ba.TimeProvider.Now()
 	if transactionType == Deposit && amount <= 0 {
 		return errors.New("deposit amount must be positive")
 	}
 	if transactionType == Withdraw && amount > 0 {
 		return errors.New("withdrawal amount must be negative")
 	}
-	ba.Transactions = append(ba.Transactions, Transaction{transactionType, amount, time.Now().Local()})
+	ba.Transactions = append(ba.Transactions, Transaction{transactionType, amount, now})
 	return nil
 }
 
