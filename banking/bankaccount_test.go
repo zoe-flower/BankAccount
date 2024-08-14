@@ -64,7 +64,7 @@ func TestDeposit(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := account.deposit(tt.depositAmount)
+			err := account.Deposit(tt.depositAmount)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err != nil)
 			}
@@ -100,7 +100,7 @@ func TestWithdraw(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := account.withdraw(tt.withdrawAmount)
+			err := account.Withdraw(tt.withdrawAmount)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Expected error: %v, got: %v", tt.expectedError, err != nil)
 			}
@@ -244,7 +244,6 @@ func TestViewTransactions(t *testing.T) {
 			expectedTransactions: []Transaction{{Deposit, 10, time.Now()}, {Withdraw, 15, time.Now()}},
 			expectedError:        false},
 	}
-	//account.Transactions{{Deposit, 10, time.Now()}, {Withdraw, 15, time.Now()}}
 	for _, tt := range tests {
 		account.Transactions = tt.expectedTransactions
 		t.Run(tt.name, func(t *testing.T) {

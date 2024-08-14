@@ -11,17 +11,31 @@ func main() {
 	account1 := openAccount("Zoe Flower", Current)
 	account2 := openAccount("Zoe Flower", Savings)
 	fmt.Println(account1, account2)
-	account1.deposit(1656)
-	account2.deposit(4631)
-	account2.withdraw(-123)
+	err4 := account1.Deposit(1656)
+	if err4 != nil {
+		fmt.Println(err4)
+		return
+	}
+	err5 := account2.Deposit(4631)
+	if err5 != nil {
+		fmt.Println(err5)
+		return
+	}
+	err3 := account2.Withdraw(-123)
+	if err3 != nil {
+		fmt.Println(err3)
+		return
+	}
 	fmt.Println(account1.Balance, account2.Balance)
 	err := transferFunds(account1, account2, 345)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	fmt.Println(account1.Balance, account2.Balance)
 	err2 := transferFunds(account2, account1, 234)
 	if err2 != nil {
+		fmt.Println(err2)
 		return
 	}
 	fmt.Println(account1.Balance, account2.Balance)
@@ -75,23 +89,29 @@ func openAccount(accountName string, accountType AccountType) *BankAccount {
 	}
 }
 
-// TODO: make this public
-func (ba *BankAccount) deposit(depositAmount int) error {
+func (ba *BankAccount) Deposit(depositAmount int) error {
 	if depositAmount < 0 {
 		return errors.New("deposit amount must be positive")
 	}
 	ba.Balance += depositAmount
-	ba.addTransaction(Deposit, depositAmount)
+	err := ba.addTransaction(Deposit, depositAmount)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }
 
-// TODO: make this public
-func (ba *BankAccount) withdraw(withdrawAmount int) error {
+func (ba *BankAccount) Withdraw(withdrawAmount int) error {
 	if withdrawAmount >= 0 {
 		return errors.New("deposit amount must be negative")
 	}
 	ba.Balance = ba.Balance + withdrawAmount
-	ba.addTransaction(Withdraw, withdrawAmount)
+	err := ba.addTransaction(Withdraw, withdrawAmount)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }
 
@@ -108,15 +128,29 @@ func transferFunds(fromAccount, toAccount *BankAccount, transferAmount int) erro
 	}
 	fromAccount.Balance -= transferAmount
 	toAccount.Balance += transferAmount
-	fromAccount.addTransaction(Transfer, -1*transferAmount)
-	toAccount.addTransaction(Transfer, transferAmount)
+	err2 := fromAccount.addTransaction(Transfer, -1*transferAmount)
+	if err2 != nil {
+		fmt.Println(err2)
+		return err2
+	}
+	err := toAccount.addTransaction(Transfer, transferAmount)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }
 
-// TODO: should return an error
-func (ba *BankAccount) addTransaction(transactionType TransactionType, amount int) {
+func (ba *BankAccount) addTransaction(transactionType TransactionType, amount int) error {
 	// now:= ba.timeProviderThingy.Now()
+	if transactionType == Deposit && amount <= 0 {
+		return errors.New("deposit amount must be positive")
+	}
+	if transactionType == Withdraw && amount > 0 {
+		return errors.New("withdrawal amount must be negative")
+	}
 	ba.Transactions = append(ba.Transactions, Transaction{transactionType, amount, time.Now().Local()})
+	return nil
 }
 
 func (ba *BankAccount) viewTransactions() []Transaction {
