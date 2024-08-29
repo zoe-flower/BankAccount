@@ -1,0 +1,15 @@
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/bin/Debug/net8.0/InitialPractice
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/bin/Debug/net8.0/InitialPractice.deps.json
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/bin/Debug/net8.0/InitialPractice.runtimeconfig.json
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/bin/Debug/net8.0/InitialPractice.dll
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/bin/Debug/net8.0/InitialPractice.pdb
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.GeneratedMSBuildEditorConfig.editorconfig
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.AssemblyInfoInputs.cache
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.AssemblyInfo.cs
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.csproj.CoreCompileInputs.cache
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.sourcelink.json
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.dll
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/refint/InitialPractice.dll
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.pdb
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/InitialPractice.genruntimeconfig.cache
+/Users/zoe.flower/Developer/Own Projects/C#.NET/InitialPractice/obj/Debug/net8.0/ref/InitialPractice.dll
